@@ -3,13 +3,7 @@ const readline = require('readline');
 //#region executing code
 let fileDirectory = './NodeJSFileInputExamples/Lesson5FileInput.txt';
 
-DisplayOutput(ReadSingleFile(fileDirectory));
-
-let userMessage = ReadUserInput();
-
-WriteToSingleFile(userMessage, fileDirectory);
-
-DisplayOutput(ReadSingleFile(fileDirectory));
+ReadUserInput();
 
 
 //#endregion executing code
@@ -54,16 +48,23 @@ function WriteToSingleFile(inputText, fDirectory)
     fileSystem.writeFileSync(fDirectory, `\n${inputText} | Written at: ${new Date()}`);
 }
 
+//turns out for now here from the lesson and in group chatting that all code for now should be in text interface. Async can be a solution to this,
+//but for now I will put everything the function. This generally feels like going against coding principles where the function should have one
+//job and one job only.
 function ReadUserInput()
 {
     const textInterface = readline.createInterface({input:process.stdin, output:process.stdout});
 
-    let userText = "text";
+    textInterface.question("please write some text: ", (userInput) => {
 
-    textInterface.question("please write some text: ", (uInput) => {
-            userText = uInput;
+            DisplayOutput("Before: ")
+            DisplayOutput(ReadSingleFile(fileDirectory));
+
+            WriteToSingleFile(userInput, fileDirectory);
+
+            DisplayOutput("After: ")
+            DisplayOutput(ReadSingleFile(fileDirectory));
+
             textInterface.close();
         });
-
-    return userText;
 }
