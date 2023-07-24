@@ -1,70 +1,71 @@
-const readline = require('readline');
+//Youtube Lesson 7 Code
 
-//#region executing code
-let fileDirectory = './NodeJSFileInputExamples/Lesson5FileInput.txt';
-
-ReadUserInput();
+//Extra Notes will be below
 
 
-//#endregion executing code
+const fileSystem = require('fs');
 
-//reads a single file in utf8 format and returns a string value of the stored input
+let fileDirectory = "./NodeJSFileInputExamples/Lesson7fileInput.txt";
+
+readSingleFile(fileDirectory);
+
+
+//function will read single file, but in this lesson asyncronysly
+function readSingleFile(file)
+{
+    //this goes in the format of [file, file format, callback (in this case an anonymous funciton) that takes the two default parameters]
+
+    //Here the file contents will be the data from the file.
+    //Use an if statement too for the error if you are expecting on reading from a particular file
+    //you might suspect could be missing/or corrupted.
+
+    //here because the lesson is not apeparently using promises I will use a try catch.
+        //try-catch scenarios tend to have a lot of overhead, try to use promises
+        //when you can in need of this situation. Will link below this file.
+
+    /*
+        To explain what it is happening here:
+         -readFile function is an async method. so what is happening is in three steps:
+           1. The reading of the data is put to the background
+
+           2. Console.log outputs reading file as specified
+
+           3. When the readfile function is done in the background it will bring console.log to the front
+              and the file contents will be logged to the console provided the file exists
+
+              -> if the file DOES NOT exist this the anonymous function will instead using this try-catch
+                 output the error message.
+
+              ->it is advisable to tweak and change the file name here, or the actual file and see the
+                error in action
+    */
+    fileSystem.readFile(file,`utf-8` ,(err, fileContents) => {
+        try {
+            console.log(fileContents);
+        } catch (error) {
+            console.log(err.message);
+        }
+    })
+    console.log("reading file...")
+}
+
+
+
+//#region Extra Notes
 
 /*
-   * It is important to note how this function is written. Typically a function typed as an action.
-     Say for example: ReadInput(), or CaluclateHypotenuse()
+    Extra documentation will be provided here.
 
-   * Any parameters like any variable should be a noun and should self describe what it is.
-     Say for example: sideLengthA, userInput, or enemyAI.
+    -Youtubers are noting that a video or resources for promises are not linked in video description.
+     Here I will amend that for those looking to learn
 
-   * Functions should generally do one task. So here in ReadSingleFile, it literally reads one
-     single file from the directory that is input. It will return the text from said file
+    *documentation on promises: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
 
-   * Also note conventions here. Functions are all capitalized. Variables are camel cased (secondary word is capitalized)
+    -First documentation with mozilla mdn
+    *documentation on Async: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Introducing
 
-   * Functions are generally important as when put where the code will actually be executed it will:
-     1: reduce the redundency in the code
-     2: make code more readable
-     3: make code easier to debug because of 1 and 2.
-
+    -Second documentation relavent with first still with mozilla MDN
+    *documentation on using promises: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Promises
 */
-function ReadSingleFile(fileDir){
-    const fileSystem = require('fs');
 
-    text = fileSystem.readFileSync(fileDir, 'utf8');
-
-    return text;
-}
-
-function DisplayOutput(output){
-    console.log(output);
-}
-
-//appends a string value to a file
-function WriteToSingleFile(inputText, fDirectory)
-{
-    const fileSystem = require('fs');
-
-    fileSystem.writeFileSync(fDirectory, `\n${inputText} | Written at: ${new Date()}`);
-}
-
-//turns out for now here from the lesson and in group chatting that all code for now should be in text interface. Async can be a solution to this,
-//but for now I will put everything the function. This generally feels like going against coding principles where the function should have one
-//job and one job only.
-function ReadUserInput()
-{
-    const textInterface = readline.createInterface({input:process.stdin, output:process.stdout});
-
-    textInterface.question("please write some text: ", (userInput) => {
-
-            DisplayOutput("Before: ")
-            DisplayOutput(ReadSingleFile(fileDirectory));
-
-            WriteToSingleFile(userInput, fileDirectory);
-
-            DisplayOutput("After: ")
-            DisplayOutput(ReadSingleFile(fileDirectory));
-
-            textInterface.close();
-        });
-}
+//#endregion

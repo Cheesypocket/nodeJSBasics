@@ -3,6 +3,8 @@ const readline = require('readline');
 /*
 Lecture 4 youtube code: URL https://www.youtube.com/watch?v=VP55JN3y6uI&list=PL1BztTYDF-QPdTvgsjf8HOwO4ZVl_LhxS&index=4&ab_channel=procademy
 
+This video is where the actual coding (not the terminal typing) actually starts. All text after this is all code.
+
 DisplayUserPrompt();
 
 //added this function as my own additional part of this code
